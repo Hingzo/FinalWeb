@@ -1,59 +1,27 @@
 <?php
 require_once '../../classes/Database.php';
-require_once '../../config/db_config.php';
+require_once '../../classes/User.php';
+require_once '../../config/db_config.php'; // Đảm bảo tải file cấu hình
 
 session_start();
-$db = new Database($host, $username, $password, $dbname);
-
-// Kiểm tra kết nối cơ sở dữ liệu
-$conn = $db->getConnection();
-if ($conn) {
-    echo "Kết nối CSDL thành công!<br>";
-} else {
-    echo "Kết nối CSDL thất bại! Vui lòng kiểm tra db_config.php.<br>";
-    exit();
-}
+$user = new User($host, $username, $password, $dbname); // Truyền các biến từ db_config.php
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = trim($_POST['email'] ?? ''); // Loại bỏ ký tự trắng
-    $password = trim($_POST['password'] ?? ''); // Loại bỏ ký tự trắng
-
-    echo "Email nhập vào (sau trim): $email<br>";
-    echo "Mật khẩu nhập vào (plaintext, sau trim): $password<br>";
+    $email = trim($_POST['email'] ?? '');
+    $password = trim($_POST['password'] ?? '');
 
     if (!empty($email) && !empty($password)) {
-        $stmt = $conn->prepare("SELECT id_nguoidung, hoten, email, matkhau, vaitro FROM tbl_nguoidung WHERE email = ?");
-        if ($stmt === false) {
-            echo "Lỗi chuẩn bị truy vấn: " . $conn->error . "<br>";
+        if ($user->login($email, $password)) {
+            $_SESSION['id_nguoidung'] = $user->getId();
+            $_SESSION['hoten'] = $user->getHoten();
+            $_SESSION['vaitro'] = $user->getVaitro();
+            header("Location: ../../index.php");
             exit();
-        }
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result && $result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-            echo "Dữ liệu từ DB: " . var_export($user, true) . "<br>";
-            $hashed_input_password = md5($password);
-            echo "Mật khẩu nhập vào (md5): $hashed_input_password<br>";
-            echo "Mật khẩu trong DB: " . $user['matkhau'] . "<br>";
-            if ($hashed_input_password === $user['matkhau']) {
-                $_SESSION['id_nguoidung'] = $user['id_nguoidung'];
-                $_SESSION['hoten'] = $user['hoten'];
-                $_SESSION['vaitro'] = $user['vaitro'];
-                echo "Vai trò: " . $_SESSION['vaitro'] . "<br>";
-                echo "Đăng nhập thành công, chuyển hướng...<br>";
-                header("Location: ../../index.php");
-                exit();
-            } else {
-                $error = "Mật khẩu không đúng! (Debug: Hash không khớp)";
-            }
         } else {
-            $error = "Email không tồn tại! (Debug: Không tìm thấy bản ghi)";
+            $error = "Email hoặc mật khẩu không đúng!";
         }
-        $stmt->close();
     } else {
         $error = "Vui lòng nhập đầy đủ email và mật khẩu!";
     }
@@ -105,4 +73,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <button type="submit" class="btn btn-primary">Đăng nhập</button>
                                 </div>
                             </form>
-                            <p class="mt-
+                            <p class="mt-3 text-center">Chưa có tài khoản? <a href="register.php">Đăng ký ngay</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
