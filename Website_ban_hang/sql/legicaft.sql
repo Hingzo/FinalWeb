@@ -1,21 +1,9 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 17, 2025 lúc 03:35 PM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Cơ sở dữ liệu: `legicaft`
@@ -122,9 +110,9 @@ CREATE TABLE `tbl_nguoidung` (
 --
 
 INSERT INTO `tbl_nguoidung` (`id_nguoidung`, `hoten`, `gioitinh`, `sdt`, `email`, `matkhau`, `diachi`, `vaitro`) VALUES
-(1, 'Le Nguyen Mai Quynh', 'Nam', '0901234567', 'quynh@gmail.com', 'a94a8fe5ccb19ba61c4c0873d391e987', '123 Đường Láng, Hà Nội', 'user'),
-(2, 'Tran Thi My Hoa', 'Nu', '0912345678', 'hoa@gmail.com', '0192023a7bbd73250516f069df18b500', '456 Nguyễn Trãi, TP.HCM', 'admin'),
-(6, 'Tran My', 'Nam', '0912345679', 'my@gmail.com', 'ffbcd37b685540bdc3e9770d8865526a', '456 Đường Pasteur, TP.HCM', 'user');
+(1, 'Le Nguyen Mai Quynh', 'Nu', '0901234567', 'quynh@gmail.com', MD5('user123'), '123 Đường Láng, Hà Nội', 'user'),
+(2, 'Tran Thi My Hoa', 'Nu', '0912345678', 'hoa@gmail.com', MD5('admin123'), '456 Nguyễn Trãi, TP.HCM', 'admin'),
+(6, 'Tran My', 'Nam', '0912345679', 'my@gmail.com', MD5('my123'), '456 Đường Pasteur, TP.HCM', 'user');
 
 -- --------------------------------------------------------
 
