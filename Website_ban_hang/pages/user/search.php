@@ -81,9 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                   <h4 class="card-title"><?php echo htmlspecialchars($product->getName()); ?></h4>
                   <p class="card-text"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> VNĐ</p>
                   <p class="card-text"><?php echo htmlspecialchars($product->getDescription()); ?></p>
-                  <form method="POST" action="cart.php">
-                    <input type="hidden" name="id_sanpham" value="<?php echo $product->getId(); ?>">
-                    <button type="submit" name="add_to_cart" class="btn btn-primary">Đặt ngay</button>
+                  <form method="GET" action="add_to_cart.php">
+                    <input type="hidden" name="id" value="<?php echo $product->getId(); ?>">
+                    <button type="submit" class="btn btn-outline-primary">Thêm vào giỏ</button>
                   </form>
                 </div>
               </div>
