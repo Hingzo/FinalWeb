@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if (file_exists($imagePath)) {
                     echo "<img src='$imagePath' class='card-img-top img-fluid' alt='" . htmlspecialchars($product->getName()) . "'>";
                 } else {
-                    echo "<img src='../../assets/images/no-image.jpg' class='card-img-top img-fluid' alt='No Image'>";
+                    echo "<img src='../../assets/images/product1.png' class='card-img-top img-fluid' alt='No Image'>";
                     error_log("Ảnh không tồn tại: $imagePath");
                 }
                 ?>

@@ -11,6 +11,9 @@ body {
     background: #F2E9DD;
     padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .logo img {
@@ -86,6 +89,7 @@ body {
     margin: 0;
     background-color: #4f92a5;
     color: white;
+    text-align: center;
 }
 
 .sidebar-menu {
@@ -108,54 +112,6 @@ body {
 .content {
     flex: 1;
     padding: 20px;
-}
-
-.login-modal {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.login-modal h3 {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.login-modal label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.login-modal input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 15px;
-}
-
-.login-modal button {
-    width: 100%;
-    padding: 10px;
-    background-color: #4f92a5;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.login-modal button:hover {
-    background-color: #3d7784;
-}
-
-.alert {
-    margin-bottom: 15px;
 }
 
 .banner img {

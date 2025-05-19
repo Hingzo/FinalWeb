@@ -35,51 +35,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>LE.GICARFT | Đăng nhập</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 <body>
-    <header class="bg-light py-2 shadow-sm">
-        <div class="container d-flex justify-content-between align-items-center">
-            <div class="logo">
-                <img src="../../assets/images/logo.png" alt="Logo LE.GICARFT" height="50">
-            </div>
-            <div class="user-cart">
-                <a href="../../index.php" class="btn btn-secondary">Quay lại trang chủ</a>
-            </div>
+    <div class="topbar">
+        <div class="logo">
+            <img src="../../assets/images/logo.png" alt="Le Gicart Logo">
         </div>
-    </header>
+        <div class="search">
+            <input type="text" placeholder="Nhập sản phẩm cần tìm kiếm">
+            <button>Tìm kiếm</button>
+        </div>
+        <div class="user-cart">
+        </div>
+    </div>
 
-    <section class="login py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card shadow">
-                        <div class="card-header bg-primary text-white text-center">
-                            <h3 class="mb-0">Đăng nhập</h3>
-                        </div>
-                        <div class="card-body">
-                            <?php if (!empty($error)): ?>
-                                <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-                            <?php endif; ?>
-                            <form method="POST" action="login.php">
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Mật khẩu</label>
-                                    <input type="password" name="password" id="password" class="form-control" required>
-                                </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
-                                </div>
-                            </form>
-                            <p class="mt-3 text-center">Chưa có tài khoản? <a href="register.php">Đăng ký ngay</a></p>
-                        </div>
-                    </div>
-                </div>
+    <div class="main-container">
+        <div class="sidebar">
+            <h3>Danh mục sản phẩm</h3>
+            <ul class="sidebar-menu">
+                <li>HOTWHEELS</li>
+                <li>MINI GT</li>
+                <li>TARMACWORKS</li>
+                <li>BABY CRY</li>
+                <li>LABUBU</li>
+                <li>BABY THREE</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <div class="login-modal">
+                <h3>Đăng nhập tài khoản</h3>
+                <?php if (!empty($error)): ?>
+                    <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+                <?php endif; ?>
+                <form method="POST" action="login.php">
+                    <label>Chưa có tài khoản?</label>
+                    <a href="register.php" style="color: #4f92a5; margin-bottom: 15px; display: block;">Đăng ký</a>
+                    <label>Email</label>
+                    <input type="email" name="email" id="email" placeholder="Nhập địa chỉ Email" required>
+                    <label>Mật khẩu</label>
+                    <input type="password" name="password" id="password" placeholder="Nhập mật khẩu" required>
+                    <button type="submit">Đăng nhập</button>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
