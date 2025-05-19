@@ -55,43 +55,42 @@ $products = Product::getFeatured($db);
                 <img src="../../assets/images/banner.jpg" alt="Banner Hotwheels" class="img-fluid rounded">
             </section>
 
-            <section class="product-section">
-                <h2 class="text-center mb-4">Sản phẩm nổi bật</h2>
-                <?php if (!empty($products)): ?>
-                    <div class="row row-cols-1 row-cols-md-4 g-4">
-                        <?php foreach ($products as $product): ?>
-                            <div class="col">
-                                <div class="card h-100 text-center shadow-sm">
-                                    <?php
-                                    $imagePath = "../../" . htmlspecialchars($product->getImage());
-                                    if (file_exists($imagePath)) {
-                                        echo "<img src='$imagePath' class='card-img-top img-fluid' alt='" . htmlspecialchars($product->getName()) . "'>";
-                                    } else {
-                                        echo "<img src='../../assets/images/product1.png' class='card-img-top img-fluid' alt='No Image'>";
-                                        error_log("Ảnh không tồn tại: $imagePath");
-                                    }
-                                    ?>
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?php echo htmlspecialchars($product->getName()); ?></h5>
-                                        <p class="card-text"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> VNĐ</p>
-                                        <p class="card-text"><?php echo htmlspecialchars($product->getDescription()); ?></p>
-                                        <?php if (isset($_SESSION['id_nguoidung']) && $_SESSION['vaitro'] == 'user'): ?>
-                                            <form method="POST" action="cart.php">
-                                                <input type="hidden" name="id_sanpham" value="<?php echo $product->getId(); ?>">
-                                                <button type="submit" name="add_to_cart" class="btn btn-outline-primary">Thêm vào giỏ</button>
-                                            </form>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <p class="text-center text-danger">Không có sản phẩm nào để hiển thị!</p>
-                <?php endif; ?>
-            </section>
-        </div>
-    </div>
+                   <section class="product-section">
+                       <h2 class="text-center mb-4">Sản phẩm nổi bật</h2>
+                       <?php if (!empty($products)): ?>
+                           <div class="row row-cols-1 row-cols-md-4 g-4">
+                               <?php foreach ($products as $product): ?>
+                                   <div class="col">
+                                       <div class="card h-100 text-center shadow-sm">
+                                           <?php
+                                           $imagePath = "../../" . htmlspecialchars($product->getImage());
+                                           if (file_exists($imagePath)) {
+                                               echo "<img src='$imagePath' class='card-img-top img-fluid' alt='" . htmlspecialchars($product->getName()) . "'>";
+                                           } else {
+                                               echo "<img src='../../assets/images/product1.png' class='card-img-top img-fluid' alt='No Image'>";
+                                               error_log("Ảnh không tồn tại: $imagePath");
+                                           }
+                                           ?>
+                                           <div class="card-body">
+                                               <h5 class="card-title"><?php echo htmlspecialchars($product->getName()); ?></h5>
+                                               <p class="card-text"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> VNĐ</p>
+                                               <p class="card-text"><?php echo htmlspecialchars($product->getDescription()); ?></p>
+                                               <form method="POST" action="cart.php">
+                                                   <input type="hidden" name="id_sanpham" value="<?php echo $product->getId(); ?>">
+                                                   <button type="submit" name="add_to_cart" class="btn btn-outline-primary">Thêm vào giỏ</button>
+                                               </form>
+                                           </div>
+                                       </div>
+                                   </div>
+                               <?php endforeach; ?>
+                           </div>
+                       <?php else: ?>
+                           <p class="text-center text-danger">Không có sản phẩm nào để hiển thị!</p>
+                       <?php endif; ?>
+                   </section>
+               </main>
+           </div>
+       </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

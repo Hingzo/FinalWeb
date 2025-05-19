@@ -10,7 +10,8 @@ body {
     align-items: center;
     background: #F2E9DD;
     padding: 10px 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
 }
 
 .logo img {
