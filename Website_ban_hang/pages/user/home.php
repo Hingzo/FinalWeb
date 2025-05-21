@@ -67,7 +67,7 @@ $products = Product::getFeatured($db);
                                            if (file_exists($imagePath)) {
                                                echo "<img src='$imagePath' class='card-img-top img-fluid' alt='" . htmlspecialchars($product->getName()) . "'>";
                                            } else {
-                                               echo "<img src='../../assets/images/product1.png' class='card-img-top img-fluid' alt='No Image'>";
+                                               echo "<img src='../../uploads/images/hotwheels_ferrari_sf90.jpg' class='card-img-top img-fluid' alt='No Image'>";
                                                error_log("Ảnh không tồn tại: $imagePath");
                                            }
                                            ?>
