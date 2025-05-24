@@ -346,3 +346,62 @@ body {
         height: 150px;
     }
 }
+
+        .food-search {
+            background-color: #4f92a5;
+            color: white;
+            padding: 20px 0;
+        }
+        .food-menu {
+            padding: 20px 0;
+        }
+        .food-menu-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+        .food-menu-img {
+            width: 150px;
+            margin-right: 20px;
+        }
+        .food-menu-img img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .food-menu-desc {
+            flex-grow: 1;
+            text-align: left;
+        }
+        .food-menu-desc h4 {
+            margin: 0 0 10px;
+            font-size: 1.2rem;
+        }
+        .food-price {
+            font-size: 1.1rem;
+            color: #4f92a5;
+            margin: 0 0 10px;
+        }
+        .food-detail {
+            font-size: 0.9rem;
+            color: #555;
+            margin: 0 0 10px;
+        }
+        .btn-primary {
+            background-color: #4f92a5;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+        .btn-primary:hover {
+            background-color: #3d7784;
+        }
+        .error {
+            color: #dc3545;
+            text-align: center;
+            padding: 10px;
+        }
