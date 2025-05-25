@@ -118,5 +118,21 @@ class Product {
         error_log("Không tìm thấy sản phẩm với ID: $id");
         return null;
     }
+
+    public function delete($db) {
+        $conn = $db->getConnection();
+        $stmt = $conn->prepare("DELETE FROM tbl_sanpham WHERE id_sanpham = ?");
+        if ($stmt === false) {
+            error_log("Lỗi chuẩn bị truy vấn xóa sản phẩm: " . $conn->error);
+            return false;
+        }
+        $stmt->bind_param("i", $this->id);
+        $result = $stmt->execute();
+        if (!$result) {
+            error_log("Lỗi khi xóa sản phẩm ID: " . $this->id . " - " . $stmt->error);
+        }
+        $stmt->close();
+        return $result;
+    }
 }
 ?>
