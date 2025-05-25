@@ -54,7 +54,7 @@ $products = Product::getFeatured($db);
                     </div>
                 </div>
                 <div class="cart">
-                    <a href="#" class="d-flex align-items-center gap-2">
+                    <a href="cart.php" class="d-flex align-items-center gap-2">
                         <i class="fas fa-shopping-cart"></i>
                         <span>Giỏ hàng</span>
                     </a>
@@ -106,9 +106,9 @@ $products = Product::getFeatured($db);
                                     <div class="product-info">
                                         <h3 class="fs-5"><?php echo htmlspecialchars($product->getName()); ?></h3>
                                         <p class="price"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> VNĐ</p>
-                                        <form method="POST" action="cart.php">
-                                            <input type="hidden" name="id_sanpham" value="<?php echo $product->getId(); ?>">
-                                            <button type="submit" name="add_to_cart" class="add-to-cart-btn">Thêm vào giỏ</button>
+                                        <form method="GET" action="add_to_cart.php">
+                                            <input type="hidden" name="id" value="<?php echo $product->getId(); ?>">
+                                       
                                         </form>
                                     </div>
                                 </div>
