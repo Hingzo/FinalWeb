@@ -1,6 +1,6 @@
 <?php
 require_once '../../classes/Database.php';
-require_once '../../classes/Order.php';
+require_once '../../classes/ManaOrder.php';
 require_once '../../config/db_config.php';
 
 session_start();

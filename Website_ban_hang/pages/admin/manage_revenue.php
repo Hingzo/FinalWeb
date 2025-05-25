@@ -399,7 +399,7 @@ try {
         <div class="admin-card text-center h-80 px-3 py-3" style="max-width: 700px; margin: 0 auto;">
             <div class="card-body">
                 <h4 class="card-title text-break mb-4" style="word-break: break-word; white-space: normal;">
-                    <strong>Biểu đồ tăng trưởng doanh thu theo tháng</strong>
+                    <strong>Biểu đồ tăng trưởng doanh thu trong năm</strong>
                 </h4>
                 <div class="chart-container">
                     <canvas id="growthChart"></canvas>

@@ -35,7 +35,7 @@ class Revenue {
             DATE_FORMAT(ngaylap, '%Y-%m') as month,
             SUM(tongtien) as monthly_revenue
         FROM tbl_donhang
-        GROUP BY DATE_FORMAT(ngaylap, '%Y-%m')
+        GROUP BY DATE_FORMAT(ngaylap,'%Y-%m')
         ORDER BY month";
         $result = $conn->query($query);
 
@@ -58,7 +58,7 @@ class Revenue {
         GROUP BY sp.id_sanpham, sp.tensanpham
         ORDER BY total_quantity_sold DESC
         LIMIT 5";
-        $result = $conn->query($query);
+        $result = $conn -> query($query);
 
         $topProducts = [];
         while ($row = $result->fetch_assoc()) {
