@@ -1,19 +1,27 @@
 <?php
 require_once '../../classes/Database.php';
-require_once '../../classes/Product.php';
-require_once '../../classes/Category.php';
+require_once '../../classes/Revenue.php';
 require_once '../../config/db_config.php';
 
 session_start();
-$db = new Database($host, $username, $password, $dbname);
+try {
+    $db = new Database($host, $username, $password, $dbname);
+    // Kiểm tra quyền admin
+    if (!isset($_SESSION['id_nguoidung']) || $_SESSION['vaitro'] != 'admin') {
+        header("Location: ../user/home.php");
+        exit();
+    }
 
-// Kiểm tra quyền admin
-if (!isset($_SESSION['id_nguoidung']) || $_SESSION['vaitro'] != 'admin') {
-    header("Location: ../user/home.php");
+    $revenue = new Revenue($db);
+    $stats = $revenue->getRevenueStats();
+    $totalRevenue = $stats['total_revenue'];
+    $orderStats = $stats['stats'];
+    $monthlyRevenue = $revenue->getMonthlyRevenue();
+    $topProducts = $revenue->getTop5Products();
+} catch (Exception $e) {
+    echo "Lỗi: " . $e->getMessage();
     exit();
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -21,9 +29,10 @@ if (!isset($_SESSION['id_nguoidung']) || $_SESSION['vaitro'] != 'admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>LE.GICARFT | Quản trị</title>
+    <title>LE.GICARFT | Thống kê doanh thu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary-color: #4f92a5;
@@ -273,21 +282,20 @@ if (!isset($_SESSION['id_nguoidung']) || $_SESSION['vaitro'] != 'admin') {
             50% { transform: translateY(-20px) rotate(180deg); }
         }
 
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 400px;
+            width: 600px;
+        }
+
         @media (max-width: 768px) {
             .dashboard-title {
                 font-size: 2rem;
             }
-            
-            .admin-card {
-                margin-bottom: 20px;
-            }
-            
-            .card-icon {
-                font-size: 3rem;
-            }
-
-            .brand-text {
-                font-size: 1.3rem;
+            .chart-container {
+                width: 100%;
+                height: 300px;
             }
         }
     </style>
@@ -317,130 +325,122 @@ if (!isset($_SESSION['id_nguoidung']) || $_SESSION['vaitro'] != 'admin') {
     </header>
 
     <div class="container mt-4">
-        <div class="welcome-section">
-            <h1 class="dashboard-title">BẢNG ĐIỀU KHIỂN HỆ THỐNG</h1>
-            <p class="dashboard-subtitle">
-                <i class="fas fa-crown me-2"></i>
-                Quản lý toàn bộ hệ thống LE.GICARFT
-            </p>
+         <div class="welcome-section">
+    <h1 class="dashboard-title fw-bold">
+        <i class="fas fa-chart-bar me-3"></i>THỐNG KÊ DOANH THU
+    </h1>
+    <p class="dashboard-subtitle">
+        Phân tích và theo dõi doanh thu cửa hàng
+    </p>
+</div>
+
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-12">
+                <div class="admin-card text-center h-100">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="card-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <h4 class="card-title">Tổng doanh thu</h4>
+                            <p class="card-text"><?= number_format($totalRevenue, 0, ',', '.') ?> đ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Các chức năng quản lý -->
-        <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6">
-                <div class="card admin-card text-center h-100">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="card-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                            <h4 class="card-title">Quản lý đơn hàng</h4>
-                            <p class="card-text">Xem và cập nhật trạng thái các đơn hàng, theo dõi quy trình giao hàng</p>
-                        </div>
-                        <a href="manage_order.php" class="btn custom-btn mt-3">
-                            <i class="fas fa-tasks me-2"></i>Quản lý đơn hàng
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="card admin-card text-center h-100">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="card-icon">
-                                <i class="fas fa-box-open"></i>
-                            </div>
-                            <h4 class="card-title">Quản lý sản phẩm</h4>
-                            <p class="card-text">Thêm, sửa, xóa sản phẩm trong hệ thống, quản lý kho hàng</p>
-                        </div>
-                        <a href="manage_product.php" class="btn custom-btn mt-3">
-                            <i class="fas fa-edit me-2"></i>Quản lý sản phẩm
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            
-        </div>
-        
         <div class="row justify-content-center mt-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="card admin-card text-center h-100">
+            <div class="col-lg-6 col-md-12">
+                <div class="admin-card text-center h-150 ">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
                             <div class="card-icon">
-                                <i class="fas fa-chart-bar"></i>
+                                <i class="fas fa-calendar"></i>
                             </div>
-                            <h4 class="card-title">Thống kê doanh thu</h4>
-                            <p class="card-text">Xem báo cáo và thống kê doanh thu, phân tích xu hướng kinh doanh</p>
+                            <h4 class="card-title">Tổng doanh thu theo tháng</h4>
+                            <ul class="list-group">
+                                <?php foreach ($monthlyRevenue as $month => $revenue): ?>
+                                    <li class="list-group-item"><?= htmlspecialchars($month) ?>: <?= number_format($revenue, 0, ',', '.') ?> đ</li>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
-                       <a href="manage_revenue.php" class="btn custom-btn mt-3">
-                            <i class="fas fa-analytics me-2"></i>Xem thống kê
-                        </a>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-lg-4 col-md-6">
-                <div class="card admin-card text-center h-100">
+        </div>
+
+        <!-- <div class="row justify-content-center mt-4">
+            <div class="col-lg-6 col-md-12">
+                <div class="admin-card text-center h-100">
                     <div class="card-body d-flex flex-column justify-content-between">
                         <div>
                             <div class="card-icon">
-                                <i class="fas fa-tags"></i>
+                                <i class="fas fa-trophy"></i>
                             </div>
-                            <h4 class="card-title">Quản lý danh mục</h4>
-                            <p class="card-text">Thêm, sửa, xóa danh mục sản phẩm, tổ chức cấu trúc danh mục</p>
+                            <h4 class="card-title">Top 5 sản phẩm bán chạy</h4>
+                            <ul class="list-group">
+                                <?php foreach ($topProducts as $index => $product): ?>
+                                    <li class="list-group-item">
+                                        <?= ($index + 1) . ". " . htmlspecialchars($product['ten_sanpham'] ?? 'Không có tên') ?>: 
+                                        <?= $product['total_quantity_sold'] ?? 0 ?> sản phẩm (<?= number_format($product['total_sales'] ?? 0, 0, ',', '.') ?> đ)
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
-                        <a href="manage_category.php" class="btn custom-btn mt-3">
-                            <i class="fas fa-folder-open me-2"></i>Quản lý danh mục
-                        </a>
                     </div>
+                </div>
+            </div>
+        </div> -->
+
+      <div class="row justify-content-center mt-4">
+    <div class="col-lg-8 col-md-12">
+        <div class="admin-card text-center h-80 px-3 py-3" style="max-width: 700px; margin: 0 auto;">
+            <div class="card-body">
+                <h4 class="card-title text-break mb-4" style="word-break: break-word; white-space: normal;">
+                    <strong>Biểu đồ tăng trưởng doanh thu theo tháng</strong>
+                </h4>
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Add smooth animations on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.admin-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
-
-            // Animate stats cards
-            const statCards = document.querySelectorAll('.stat-card');
-            statCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    card.style.transition = 'all 0.4s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 50);
-            });
+        const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(ctxGrowth, {
+            type: 'line',
+            data: {
+                labels: <?= json_encode(array_keys($monthlyRevenue)) ?>,
+                datasets: [{
+                    label: 'Doanh thu (đ)',
+                    data: <?= json_encode(array_values($monthlyRevenue)) ?>,
+                    backgroundColor: 'rgba(79, 146, 165, 0.2)',
+                    borderColor: 'rgba(79, 146, 165, 1)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('vi-VN') + ' đ';
+                            }
+                        }
+                    }
+                }
+            }
         });
-
-        // Refresh stats every 30 seconds
-        setInterval(function() {
-            fetch('get_stats.php')
-                .then(response => response.json())
-                .then(data => {
-                    document.querySelector('.stat-card:nth-child(1) .stat-number').textContent = data.products;
-                    document.querySelector('.stat-card:nth-child(2) .stat-number').textContent = data.orders;
-                    document.querySelector('.stat-card:nth-child(3) .stat-number').textContent = data.users;
-                    document.querySelector('.stat-card:nth-child(4) .stat-number').textContent = data.revenue + 'đ';
-                })
-                .catch(error => console.log('Stats refresh error:', error));
-        }, 30000);
     </script>
 </body>
 </html>
