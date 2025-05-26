@@ -8,8 +8,19 @@ require_once '../../config/db_config.php';
 // Kết nối cơ sở dữ liệu
 $db = new Database($host, $username, $password, $dbname);
 
-// Lấy danh sách sản phẩm nổi bật
-$products = Product::getFeatured($db);
+// Lấy danh sách danh mục
+$categories = Category::getAll($db);
+
+// Lấy danh mục được chọn từ URL (nếu có)
+$selectedCategoryId = isset($_GET['category']) ? (int)$_GET['category'] : null;
+
+// Lấy sản phẩm nổi bật hoặc sản phẩm theo danh mục
+$products = [];
+if ($selectedCategoryId) {
+    $products = Product::getByCategory($db, $selectedCategoryId);
+} else {
+    $products = Product::getFeatured($db);
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,12 +40,12 @@ $products = Product::getFeatured($db);
             <div class="logo">
                 <img src="../../assets/images/logo.png" alt="Le Gicart Logo">
             </div>
-    <div class="search">
-            <form method="POST" action="search.php">
-                <input type="text" name="keyword" placeholder="Nhập sản phẩm cần tìm kiếm" required>
-                <button type="submit">Tìm kiếm</button>
-            </form>
-        </div>
+            <div class="search">
+                <form method="POST" action="search.php">
+                    <input type="text" name="keyword" placeholder="Nhập sản phẩm cần tìm kiếm" required>
+                    <button type="submit">Tìm kiếm</button>
+                </form>
+            </div>
             <div class="user-cart d-flex align-items-center gap-3">
                 <div class="user-info d-flex align-items-center">
                     <div class="avatar">
@@ -43,16 +54,16 @@ $products = Product::getFeatured($db);
                         </a>
                     </div>
                     <div class="account">
-                            <span>Tài khoản</span>
-                            <strong>
-                                <?php
-                                if (isset($_SESSION['hoten'])) {
-                                    echo htmlspecialchars($_SESSION['hoten']);
-                                } else {
-                                    echo "Khách hàng";
-                                }
-                                ?>
-                            </strong>
+                        <span>Tài khoản</span>
+                        <strong>
+                            <?php
+                            if (isset($_SESSION['hoten'])) {
+                                echo htmlspecialchars($_SESSION['hoten']);
+                            } else {
+                                echo "Khách hàng";
+                            }
+                            ?>
+                        </strong>
                     </div>
                 </div>
                 <div class="cart">
@@ -72,12 +83,11 @@ $products = Product::getFeatured($db);
         <div class="sidebar">
             <h3>Danh mục sản phẩm</h3>
             <ul class="category-list">
-                <li class="category-item"><i class="fas fa-chevron-down"></i> HOTWHEELS</li>
-                <li class="category-item"><i class="fas fa-chevron-down"></i> MINI GT</li>
-                <li class="category-item"><i class="fas fa-chevron-down"></i> TARMACWORKS</li>
-                <li class="category-item"><i class="fas fa-chevron-down"></i> BABY CRY</li>
-                <li class="category-item"><i class="fas fa-chevron-down"></i> LABUBU</li>
-                <li class="category-item"><i class="fas fa-chevron-down"></i> BABY THREE</li>
+                <?php foreach ($categories as $category): ?>
+                    <li class="category-item" onclick="window.location.href='my-order.php?category=<?php echo $category->getId(); ?>'">
+                        <i class="fas fa-chevron-down"></i> <?php echo htmlspecialchars($category->getName()); ?>
+                    </li>
+                <?php endforeach; ?>
             </ul>
         </div>
 
@@ -88,9 +98,13 @@ $products = Product::getFeatured($db);
                 <img src="../../assets/images/banner.jpg" alt="Banner Hotwheels" class="img-fluid rounded">
             </div>
 
-            <!-- Featured Products -->
+            <!-- Featured Products or Products by Category -->
             <section class="product-section">
-                <h2 class="text-center mb-4">Sản phẩm nổi bật</h2>
+                <h2 class="text-center mb-4">
+                    <?php echo $selectedCategoryId ? "Sản phẩm trong danh mục: " . htmlspecialchars(array_reduce($categories, function($carry, $cat) use ($selectedCategoryId) {
+                        return $cat->getId() == $selectedCategoryId ? $cat->getName() : $carry;
+                    }, "Không xác định")) : "Sản phẩm nổi bật"; ?>
+                </h2>
                 <?php if (!empty($products)): ?>
                     <div class="row row-cols-1 row-cols-md-4 g-4">
                         <?php foreach ($products as $product): ?>
@@ -141,5 +155,20 @@ $products = Product::getFeatured($db);
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="filescript.js"></script>
+    <script>
+        // Thêm class active cho danh mục được chọn
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryId = urlParams.get('category');
+            if (categoryId) {
+                document.querySelectorAll('.category-item').forEach(item => {
+                    const itemId = item.getAttribute('onclick')?.match(/category=(\d+)/)?.[1];
+                    if (itemId && itemId == categoryId) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

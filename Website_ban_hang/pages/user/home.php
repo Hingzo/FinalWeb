@@ -7,8 +7,19 @@ require_once '../../config/db_config.php';
 session_start();
 $db = new Database($host, $username, $password, $dbname);
 
-// Lấy danh sách sản phẩm nổi bật
-$products = Product::getFeatured($db);
+// Lấy danh sách danh mục
+$categories = Category::getAll($db);
+
+// Lấy danh mục được chọn từ URL (nếu có)
+$selectedCategoryId = isset($_GET['category']) ? (int)$_GET['category'] : null;
+
+// Lấy sản phẩm nổi bật hoặc sản phẩm theo danh mục
+$products = [];
+if ($selectedCategoryId) {
+    $products = Product::getByCategory($db, $selectedCategoryId);
+} else {
+    $products = Product::getFeatured($db);
+}
 ?>
 
 <!DOCTYPE html>
@@ -41,12 +52,11 @@ $products = Product::getFeatured($db);
         <div class="sidebar">
             <h3>Danh mục sản phẩm</h3>
             <ul class="sidebar-menu">
-                <li>HOTWHEELS</li>
-                <li>MINI GT</li>
-                <li>TARMACWORKS</li>
-                <li>BABY CRY</li>
-                <li>LABUBU</li>
-                <li>BABY THREE</li>
+                <?php foreach ($categories as $category): ?>
+                    <li onclick="window.location.href='home.php?category=<?php echo $category->getId(); ?>'">
+                        <?php echo htmlspecialchars($category->getName()); ?>
+                    </li>
+                <?php endforeach; ?>
             </ul>
         </div>
 
@@ -55,42 +65,60 @@ $products = Product::getFeatured($db);
                 <img src="../../assets/images/banner.jpg" alt="Banner Hotwheels" class="img-fluid rounded">
             </section>
 
-                   <section class="product-section">
-                       <h2 class="text-center mb-4">Sản phẩm nổi bật</h2>
-                       <?php if (!empty($products)): ?>
-                           <div class="row row-cols-1 row-cols-md-4 g-4">
-                               <?php foreach ($products as $product): ?>
-                                   <div class="col">
-                                       <div class="card h-100 text-center shadow-sm">
-                                           <?php
-                                           $imagePath = "../../" . htmlspecialchars($product->getImage());
-                                           if (file_exists($imagePath)) {
-                                               echo "<img src='$imagePath' class='card-img-top img-fluid' alt='" . htmlspecialchars($product->getName()) . "'>";
-                                           } else {
-                                               echo "<img src='../../uploads/images/labubu_cute_pets.jpg' class='card-img-top img-fluid' alt='No Image'>";
-                                               error_log("Ảnh không tồn tại: $imagePath");
-                                           }
-                                           ?>
-                                           <div class="card-body">
-                                               <h5 class="card-title"><?php echo htmlspecialchars($product->getName()); ?></h5>
-                                               <p class="card-text"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> VNĐ</p>
-                                               <p class="card-text"><?php echo htmlspecialchars($product->getDescription()); ?></p>
-                                               <form method="POST" action="cart.php">
-                                                   <input type="hidden" name="id_sanpham" value="<?php echo $product->getId(); ?>">
-                                               </form>
-                                           </div>
-                                       </div>
-                                   </div>
-                               <?php endforeach; ?>
-                           </div>
-                       <?php else: ?>
-                           <p class="text-center text-danger">Không có sản phẩm nào để hiển thị!</p>
-                       <?php endif; ?>
-                   </section>
-               </main>
-           </div>
-       </div>
+            <section class="product-section">
+                <h2 class="text-center mb-4">
+                    <?php echo $selectedCategoryId ? "Sản phẩm trong danh mục: " . htmlspecialchars(array_reduce($categories, function($carry, $cat) use ($selectedCategoryId) {
+                        return $cat->getId() == $selectedCategoryId ? $cat->getName() : $carry;
+                    }, "Không xác định")) : "Sản phẩm nổi bật"; ?>
+                </h2>
+                <?php if (!empty($products)): ?>
+                    <div class="row row-cols-1 row-cols-md-4 g-4">
+                        <?php foreach ($products as $product): ?>
+                            <div class="col">
+                                <div class="card h-100 text-center shadow-sm">
+                                    <?php
+                                    $imagePath = "../../" . htmlspecialchars($product->getImage());
+                                    if (file_exists($imagePath)) {
+                                        echo "<img src='$imagePath' class='card-img-top img-fluid' alt='" . htmlspecialchars($product->getName()) . "'>";
+                                    } else {
+                                        echo "<img src='../../uploads/images/labubu_cute_pets.jpg' class='card-img-top img-fluid' alt='No Image'>";
+                                        error_log("Ảnh không tồn tại: $imagePath");
+                                    }
+                                    ?>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo htmlspecialchars($product->getName()); ?></h5>
+                                        <p class="card-text"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> VNĐ</p>
+                                        <p class="card-text"><?php echo htmlspecialchars($product->getDescription()); ?></p>
+                                        <form method="POST" action="cart.php">
+                                            <input type="hidden" name="id_sanpham" value="<?php echo $product->getId(); ?>">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php else: ?>
+                    <p class="text-center text-danger">Không có sản phẩm nào để hiển thị!</p>
+                <?php endif; ?>
+            </section>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Thêm class active cho danh mục được chọn
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryId = urlParams.get('category');
+            if (categoryId) {
+                document.querySelectorAll('.sidebar-menu li').forEach(item => {
+                    const itemId = item.getAttribute('onclick')?.match(/category=(\d+)/)?.[1];
+                    if (itemId && itemId == categoryId) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>

@@ -405,3 +405,15 @@ body {
             text-align: center;
             padding: 10px;
         }
+               .sidebar .sidebar-menu li {
+            cursor: pointer;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+        .sidebar .sidebar-menu li:hover {
+            background-color: #f0f0f0;
+        }
+        .sidebar .sidebar-menu li.active {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
