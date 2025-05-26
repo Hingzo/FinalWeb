@@ -118,7 +118,30 @@ class Product {
         error_log("Không tìm thấy sản phẩm với ID: $id");
         return null;
     }
-
+public static function getByCategory($db, $categoryId) {
+        $conn = $db->getConnection();
+        $stmt = $conn->prepare("SELECT * FROM tbl_sanpham WHERE id_danhmuc = ?");
+        $stmt->bind_param("i", $categoryId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $products = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $products[] = new Product(
+                    $row['id_sanpham'],
+                    $row['tensanpham'],
+                    $row['giasanpham'],
+                    $row['soluongsanpham'],
+                    $row['mota'],
+                    $row['id_danhmuc'],
+                    $row['hinh_anh']
+                );
+            }
+        } else {
+            error_log("Không có sản phẩm nào trong danh mục ID: $categoryId. Num rows: " . ($result ? $result->num_rows : "Lỗi truy vấn"));
+        }
+        return $products;
+    }
     public function delete($db) {
         $conn = $db->getConnection();
         $stmt = $conn->prepare("DELETE FROM tbl_sanpham WHERE id_sanpham = ?");

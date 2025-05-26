@@ -175,3 +175,15 @@
         .popup-buttons button:last-child:hover {
             background-color: #d0d0d0;
         }
+       .sidebar .category-item {
+            cursor: pointer;
+            padding: 10px;
+            transition: background-color 0.3s;
+        }
+        .sidebar .category-item:hover {
+            background-color: #f0f0f0;
+        }
+        .category-item.active {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }

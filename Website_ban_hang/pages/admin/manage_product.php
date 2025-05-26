@@ -103,29 +103,19 @@ foreach ($categories as $category) {
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header-bg text-white py-3 shadow-sm">
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-3">
-                    <div class="d-flex align-items-center">
-                        <img src="logo.png" alt="LE.GICARFT Logo" class="logo-img">
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <!-- Search bar in header if needed -->
-                </div>
-                <div class="col-md-3 text-end">
-                    <div class="d-flex align-items-center justify-content-end">
-                        <div class="me-3">
-                            <small>Tài khoản</small>
-                            <div><strong><?php echo htmlspecialchars($_SESSION['hoten']); ?></strong></div>
-                        </div>
-                        <div class="bg-white rounded-circle p-2">
-                            <i class="fas fa-user text-muted"></i>
-                        </div>
-                    </div>
-                </div>
+    <header class="text-white py-3 shadow-lg">
+        <div class="container d-flex justify-content-between align-items-center me-2">
+            <div class="logo-container">
+                <img src="../../assets/images/logo.png" alt="LE.GICARFT Logo" width="100" height="60">
+            </div>
+            <div class="user-cart">
+                <span class="text-black me-3">
+                    <i class="fas fa-user-shield me-2"></i>
+                    Xin chào, <strong><?php echo htmlspecialchars($_SESSION['hoten']); ?></strong>!
+                </span>
+                <a href="../user/logout.php" class="btn logout-btn text-black">
+                    <i class="fas fa-sign-out-alt me-2 text-black"></i>Đăng xuất
+                </a>
             </div>
         </div>
     </header>
