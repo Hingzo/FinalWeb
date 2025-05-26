@@ -289,6 +289,24 @@ $total_pages = ceil($total_orders / $per_page);
             gap: 10px;
         }
 
+        /* Thêm style cho sidebar */
+        .sidebar {
+            background-color: #5a9bb8;
+            min-height: 100vh;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .dashboard-title {
                 font-size: 1.5rem;
@@ -318,10 +336,10 @@ $total_pages = ceil($total_orders / $per_page);
     </style>
 </head>
 <body>
-     <header class=" text-white py-3 shadow-lg">
+    <header class="text-white py-3 shadow-lg">
         <div class="container d-flex justify-content-between align-items-center me-2">
             <div class="logo-container">
-                   <img src="../../assets/images/logo.png" alt="LE.GICARFT Logo" width="100" height="60">
+                <img src="../../assets/images/logo.png" alt="LE.GICARFT Logo" width="100" height="60">
             </div>
             <div class="user-cart">
                 <span class="text-black me-3">
@@ -335,277 +353,300 @@ $total_pages = ceil($total_orders / $per_page);
         </div>
     </header>
 
-    <div class="container mt-4">
-        <div class="welcome-section">
-            <h1 class="dashboard-title">
-                <i class="fas fa-shopping-cart me-3"></i>QUẢN LÝ ĐƠN HÀNG
-            </h1>
-            <p class="dashboard-subtitle">
-                Theo dõi và cập nhật trạng thái các đơn hàng của khách hàng
-            </p>
-        </div>
-
-        <!-- Thanh tìm kiếm -->
-        <div class="search-container">
-            <form method="GET" class="d-flex" style="width: 90%; height: 40px;">
-                <input type="text" name="search" class="form-control" placeholder="Tìm theo mã ĐH hoặc tên khách..." value="<?php echo htmlspecialchars($search); ?>">
-                <button type="submit" style="width: 200px;" class="btn d-flex align-items-center justify-content-center">
-                    <i class="fas fa-search me-2"></i>Tìm kiếm
-                </button>
-            </form>
-        </div>
-
-        <?php if ($message): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="fas fa-check-circle me-2"></i><?php echo htmlspecialchars($message); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- Container chính -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar p-0">
+                <div class="p-3">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle d-flex align-items-center w-100" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bars me-2"></i> Chức năng quản lý
+                        </button>
+                        <ul class="dropdown-menu w-100">
+                            <li><a class="dropdown-item active" href="manage_order.php">Quản lý đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="manage_product.php">Quản lý sản phẩm</a></li>
+                            <li><a class="dropdown-item" href="manage_revenue.php">Thống kê doanh thu</a></li>
+                            <li><a class="dropdown-item" href="manage_category.php">Quản lý danh mục</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        <?php elseif ($error): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fas fa-exclamation-triangle me-2"></i><?php echo htmlspecialchars($error); ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
 
-        <div class="admin-card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th><i class="fas fa-hashtag me-2"></i>Mã ĐH</th>
-                                <th><i class="fas fa-user me-2"></i>Khách hàng</th>
-                                <th><i class="fas fa-calendar me-2"></i>Ngày đặt</th>
-                                <th><i class="fas fa-money-bill me-2"></i>Tổng tiền</th>
-                                <th><i class="fas fa-info-circle me-2"></i>Trạng thái</th>
-                                <th><i class="fas fa-sticky-note me-2"></i>Ghi chú</th>
-                                <th><i class="fas fa-cogs me-2"></i>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($orders)): ?>
-                                <?php foreach ($orders as $ord): ?>
-                                    <tr>
-                                        <td><strong>#<?php echo $ord['id_donhang']; ?></strong></td>
-                                        <td><?php echo htmlspecialchars($ord['hoten'] ?? 'N/A'); ?></td>
-                                        <td><?php echo date('d/m/Y', strtotime($ord['ngaylap'])); ?></td>
-                                        <td><strong><?php echo number_format($ord['tongtien'], 0, ',', '.') . ' VNĐ'; ?></strong></td>
-                                        <td>
-                                            <span class="status-badge <?php echo $order->getStatusBadgeClass($ord['tinhtrang']); ?>">
-                                                <?php echo htmlspecialchars($ord['tinhtrang'] ?: 'Chưa xác định'); ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <?php 
-                                            $ghichu = htmlspecialchars($ord['ghichu'] ?? '');
-                                            echo $ghichu ? (strlen($ghichu) > 30 ? substr($ghichu, 0, 30) . '...' : $ghichu) : '<em>Không có</em>';
-                                            ?>
-                                        </td>
-                                        <td>
-                                            <div class="order-actions">
-                                                <button class="btn view-btn btn-sm" data-bs-toggle="modal" data-bs-target="#detailsModal<?php echo $ord['id_donhang']; ?>">
-                                                    <i class="fas fa-eye me-1"></i>Chi tiết
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="7" class="text-center py-4">
-                                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
-                                        <p class="text-muted">Không có đơn hàng nào<?php echo $search ? ' khớp với "' . htmlspecialchars($search) . '"' : ''; ?></p>
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+            <!-- Main Content -->
+            <div class="col-md-10 p-4">
+                <div class="welcome-section">
+                    <h1 class="dashboard-title">
+                        <i class="fas fa-shopping-cart me-3"></i>QUẢN LÝ ĐƠN HÀNG
+                    </h1>
+                    <p class="dashboard-subtitle">
+                        Theo dõi và cập nhật trạng thái các đơn hàng của khách hàng
+                    </p>
                 </div>
 
-                <!-- Pagination -->
-                <?php if ($total_pages > 1): ?>
-                    <nav aria-label="Phân trang đơn hàng" class="mt-4">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">
-                                    <i class="fas fa-chevron-left"></i> Trước
-                                </a>
-                            </li>
-                            <?php for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++): ?>
-                                <li class="page-item <?php echo $page == $i ? 'active' : ''; ?>">
-                                    <a class="page-link" href="?page=<?php echo $i; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>"><?php echo $i; ?></a>
-                                </li>
-                            <?php endfor; ?>
-                            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $page + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">
-                                    Sau <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                <?php endif; ?>
-            </div>
-        </div>
+                <!-- Thanh tìm kiếm -->
+                <div class="search-container">
+                    <form method="GET" class="d-flex" style="width: 90%; height: 40px;">
+                        <input type="text" name="search" class="form-control" placeholder="Tìm theo mã ĐH hoặc tên khách..." value="<?php echo htmlspecialchars($search); ?>">
+                        <button type="submit" style="width: 200px;" class="btn d-flex align-items-center justify-content-center">
+                            <i class="fas fa-search me-2"></i>Tìm kiếm
+                        </button>
+                    </form>
+                </div>
 
-        <!-- Modals -->
-        <?php foreach ($orders as $ord): ?>
-            <!-- Modal xem chi tiết -->
-            <div class="modal fade" id="detailsModal<?php echo $ord['id_donhang']; ?>" tabindex="-1" aria-labelledby="detailsModalLabel<?php echo $ord['id_donhang']; ?>" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="detailsModalLabel<?php echo $ord['id_donhang']; ?>">
-                                <i class="fas fa-file-invoice me-2"></i>Chi tiết đơn hàng #<?php echo $ord['id_donhang']; ?>
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <?php if ($message): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle me-2"></i><?php echo htmlspecialchars($message); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php elseif ($error): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i><?php echo htmlspecialchars($error); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+
+                <div class="admin-card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th><i class="fas fa-hashtag me-2"></i>Mã ĐH</th>
+                                        <th><i class="fas fa-user me-2"></i>Khách hàng</th>
+                                        <th><i class="fas fa-calendar me-2"></i>Ngày đặt</th>
+                                        <th><i class="fas fa-money-bill me-2"></i>Tổng tiền</th>
+                                        <th><i class="fas fa-info-circle me-2"></i>Trạng thái</th>
+                                        <th><i class="fas fa-sticky-note me-2"></i>Ghi chú</th>
+                                        <th><i class="fas fa-cogs me-2"></i>Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (!empty($orders)): ?>
+                                        <?php foreach ($orders as $ord): ?>
+                                            <tr>
+                                                <td><strong>#<?php echo $ord['id_donhang']; ?></strong></td>
+                                                <td><?php echo htmlspecialchars($ord['hoten'] ?? 'N/A'); ?></td>
+                                                <td><?php echo date('d/m/Y', strtotime($ord['ngaylap'])); ?></td>
+                                                <td><strong><?php echo number_format($ord['tongtien'], 0, ',', '.') . ' VNĐ'; ?></strong></td>
+                                                <td>
+                                                    <span class="status-badge <?php echo $order->getStatusBadgeClass($ord['tinhtrang']); ?>">
+                                                        <?php echo htmlspecialchars($ord['tinhtrang'] ?: 'Chưa xác định'); ?>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <?php 
+                                                    $ghichu = htmlspecialchars($ord['ghichu'] ?? '');
+                                                    echo $ghichu ? (strlen($ghichu) > 30 ? substr($ghichu, 0, 30) . '...' : $ghichu) : '<em>Không có</em>';
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <div class="order-actions">
+                                                        <button class="btn view-btn btn-sm" data-bs-toggle="modal" data-bs-target="#detailsModal<?php echo $ord['id_donhang']; ?>">
+                                                            <i class="fas fa-eye me-1"></i>Chi tiết
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="7" class="text-center py-4">
+                                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                                <p class="text-muted">Không có đơn hàng nào<?php echo $search ? ' khớp với "' . htmlspecialchars($search) . '"' : ''; ?></p>
+                                            </td>
+                                        </tr>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-6">
+
+                        <!-- Pagination -->
+                        <?php if ($total_pages > 1): ?>
+                            <nav aria-label="Phân trang đơn hàng" class="mt-4">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                        <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">
+                                            <i class="fas fa-chevron-left"></i> Trước
+                                        </a>
+                                    </li>
+                                    <?php for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++): ?>
+                                        <li class="page-item <?php echo $page == $i ? 'active' : ''; ?>">
+                                            <a class="page-link" href="?page=<?php echo $i; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>"><?php echo $i; ?></a>
+                                        </li>
+                                    <?php endfor; ?>
+                                    <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                                        <a class="page-link" href="?page=<?php echo $page + 1; ?><?php echo $search ? '&search=' . urlencode($search) : ''; ?>">
+                                            Sau <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Modals -->
+                <?php foreach ($orders as $ord): ?>
+                    <!-- Modal xem chi tiết -->
+                    <div class="modal fade" id="detailsModal<?php echo $ord['id_donhang']; ?>" tabindex="-1" aria-labelledby="detailsModalLabel<?php echo $ord['id_donhang']; ?>" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="detailsModalLabel<?php echo $ord['id_donhang']; ?>">
+                                        <i class="fas fa-file-invoice me-2"></i>Chi tiết đơn hàng #<?php echo $ord['id_donhang']; ?>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="order-info-card">
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Mã đơn hàng:</span> #<?php echo $ord['id_donhang']; ?>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Khách hàng:</span> <?php echo htmlspecialchars($ord['hoten'] ?? 'N/A'); ?>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Ngày đặt:</span> <?php echo date('d/m/Y', strtotime($ord['ngaylap'])); ?>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Tổng tiền:</span> <strong><?php echo number_format($ord['tongtien'], 0, ',', '.') . ' VNĐ'; ?></strong>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Trạng thái:</span> 
+                                                    <span class="status-badge <?php echo $order->getStatusBadgeClass($ord['tinhtrang']); ?>">
+                                                        <?php echo htmlspecialchars($ord['tinhtrang'] ?: 'Chưa xác định'); ?>
+                                                    </span>
+                                                </div>
+                                                <div class="detail-item">
+                                                    <span class="detail-label">Ghi chú:</span> <?php echo htmlspecialchars($ord['ghichu'] ?? 'Không có'); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h6 class="mb-3">Chi tiết sản phẩm</h6>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tên sản phẩm</th>
+                                                        <th>Số lượng</th>
+                                                        <th>Giá tiền</th>
+                                                        <th>Thành tiền</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $details = $order->getOrderDetails($ord['id_donhang']);
+                                                    $totalDetail = 0;
+                                                    foreach ($details as $item):
+                                                        $itemTotal = $item['soluong'] * $item['giatien'];
+                                                        $totalDetail += $itemTotal;
+                                                    ?>
+                                                        <tr>
+                                                            <td><?php echo htmlspecialchars($item['tensanpham'] ?? 'N/A'); ?></td>
+                                                            <td><?php echo $item['soluong']; ?></td>
+                                                            <td><?php echo number_format($item['giatien'], 0, ',', '.') . ' VNĐ'; ?></td>
+                                                            <td><?php echo number_format($itemTotal, 0, ',', '.') . ' VNĐ'; ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                    <?php if (empty($details)): ?>
+                                                        <tr><td colspan="4" class="text-center">Không có sản phẩm nào</td></tr>
+                                                    <?php else: ?>
+                                                        <tr>
+                                                            <td colspan="3" class="text-end"><strong>Tổng cộng:</strong></td>
+                                                            <td><strong><?php echo number_format($totalDetail, 0, ',', '.') . ' VNĐ'; ?></strong></td>
+                                                        </tr>
+                                                    <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn update-btn" data-bs-toggle="modal" data-bs-target="#updateModal<?php echo $ord['id_donhang']; ?>" title="Cập nhật trạng thái đơn hàng">
+                                        <i class="fas fa-edit me-2"></i>Cập nhật trạng thái
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        <i class="fas fa-times me-2"></i>Đóng
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal cập nhật trạng thái -->
+                    <div class="modal fade" id="updateModal<?php echo $ord['id_donhang']; ?>" tabindex="-1" aria-labelledby="updateModalLabel<?php echo $ord['id_donhang']; ?>" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateModalLabel<?php echo $ord['id_donhang']; ?>">
+                                        <i class="fas fa-edit me-2"></i>Cập nhật trạng thái đơn hàng #<?php echo $ord['id_donhang']; ?>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
                                     <div class="order-info-card">
                                         <div class="detail-item">
-                                            <span class="detail-label">Mã đơn hàng:</span> #<?php echo $ord['id_donhang']; ?>
-                                        </div>
-                                        <div class="detail-item">
                                             <span class="detail-label">Khách hàng:</span> <?php echo htmlspecialchars($ord['hoten'] ?? 'N/A'); ?>
-                                        </div>
-                                        <div class="detail-item">
-                                            <span class="detail-label">Ngày đặt:</span> <?php echo date('d/m/Y', strtotime($ord['ngaylap'])); ?>
                                         </div>
                                         <div class="detail-item">
                                             <span class="detail-label">Tổng tiền:</span> <strong><?php echo number_format($ord['tongtien'], 0, ',', '.') . ' VNĐ'; ?></strong>
                                         </div>
                                         <div class="detail-item">
-                                            <span class="detail-label">Trạng thái:</span> 
+                                            <span class="detail-label">Trạng thái hiện tại:</span> 
                                             <span class="status-badge <?php echo $order->getStatusBadgeClass($ord['tinhtrang']); ?>">
                                                 <?php echo htmlspecialchars($ord['tinhtrang'] ?: 'Chưa xác định'); ?>
                                             </span>
                                         </div>
-                                        <div class="detail-item">
-                                            <span class="detail-label">Ghi chú:</span> <?php echo htmlspecialchars($ord['ghichu'] ?? 'Không có'); ?>
+                                    </div>
+                                    
+                                    <?php
+                                    $available_statuses = $order->getStatusOptions($ord['tinhtrang']);
+                                    if (empty($available_statuses)):
+                                    ?>
+                                        <div class="alert alert-warning" role="alert">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>Không có trạng thái nào khả dụng để chuyển đổi. Vui lòng kiểm tra dữ liệu.
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6 class="mb-3">Chi tiết sản phẩm</h6>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Tên sản phẩm</th>
-                                                <th>Số lượng</th>
-                                                <th>Giá tiền</th>
-                                                <th>Thành tiền</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $details = $order->getOrderDetails($ord['id_donhang']);
-                                            $totalDetail = 0;
-                                            foreach ($details as $item):
-                                                $itemTotal = $item['soluong'] * $item['giatien'];
-                                                $totalDetail += $itemTotal;
-                                            ?>
-                                                <tr>
-                                                    <td><?php echo htmlspecialchars($item['tensanpham'] ?? 'N/A'); ?></td>
-                                                    <td><?php echo $item['soluong']; ?></td>
-                                                    <td><?php echo number_format($item['giatien'], 0, ',', '.') . ' VNĐ'; ?></td>
-                                                    <td><?php echo number_format($itemTotal, 0, ',', '.') . ' VNĐ'; ?></td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                            <?php if (empty($details)): ?>
-                                                <tr><td colspan="4" class="text-center">Không có sản phẩm nào</td></tr>
-                                            <?php else: ?>
-                                                <tr>
-                                                    <td colspan="3" class="text-end"><strong>Tổng cộng:</strong></td>
-                                                    <td><strong><?php echo number_format($totalDetail, 0, ',', '.') . ' VNĐ'; ?></strong></td>
-                                                </tr>
-                                            <?php endif; ?>
-                                        </tbody>
-                                    </table>
+                                    <?php else: ?>
+                                        <form method="POST" class="update-status-form">
+                                            <input type="hidden" name="action" value="update_status">
+                                            <input type="hidden" name="id_donhang" value="<?php echo $ord['id_donhang']; ?>">
+                                            <div class="mb-3">
+                                                <label for="new_status_<?php echo $ord['id_donhang']; ?>" class="form-label">
+                                                    <i class="fas fa-arrow-right me-2"></i>Chọn trạng thái mới
+                                                </label>
+                                                <select name="new_status" id="new_status_<?php echo $ord['id_donhang']; ?>" class="form-control" required>
+                                                    <option value="">-- Chọn trạng thái --</option>
+                                                    <?php foreach ($available_statuses as $status): ?>
+                                                        <option value="<?php echo htmlspecialchars($status); ?>"><?php echo htmlspecialchars($status); ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button type="submit" class="btn custom-btn" id="submitBtn_<?php echo $ord['id_donhang']; ?>">
+                                                    <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                    <span class="btn-text"><i class="fas fa-save me-2"></i>Cập nhật</span>
+                                                </button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    <i class="fas fa-times me-2"></i>Hủy
+                                                </button>
+                                            </div>
+                                        </form>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button class="btn update-btn" data-bs-toggle="modal" data-bs-target="#updateModal<?php echo $ord['id_donhang']; ?>" title="Cập nhật trạng thái đơn hàng">
-                                <i class="fas fa-edit me-2"></i>Cập nhật trạng thái
-                            </button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                <i class="fas fa-times me-2"></i>Đóng
-                            </button>
-                        </div>
                     </div>
+                <?php endforeach; ?>
+
+                <div class="text-center mt-4">
+                    <a href="dashboard.php" class="btn custom-btn">
+                        <i class="fas fa-tachometer-alt me-2"></i>Về Dashboard
+                    </a>
                 </div>
             </div>
-
-            <!-- Modal cập nhật trạng thái -->
-            <div class="modal fade" id="updateModal<?php echo $ord['id_donhang']; ?>" tabindex="-1" aria-labelledby="updateModalLabel<?php echo $ord['id_donhang']; ?>" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="updateModalLabel<?php echo $ord['id_donhang']; ?>">
-                                <i class="fas fa-edit me-2"></i>Cập nhật trạng thái đơn hàng #<?php echo $ord['id_donhang']; ?>
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="order-info-card">
-                                <div class="detail-item">
-                                    <span class="detail-label">Khách hàng:</span> <?php echo htmlspecialchars($ord['hoten'] ?? 'N/A'); ?>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Tổng tiền:</span> <strong><?php echo number_format($ord['tongtien'], 0, ',', '.') . ' VNĐ'; ?></strong>
-                                </div>
-                                <div class="detail-item">
-                                    <span class="detail-label">Trạng thái hiện tại:</span> 
-                                    <span class="status-badge <?php echo $order->getStatusBadgeClass($ord['tinhtrang']); ?>">
-                                        <?php echo htmlspecialchars($ord['tinhtrang'] ?: 'Chưa xác định'); ?>
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <?php
-                            $available_statuses = $order->getStatusOptions($ord['tinhtrang']);
-                            if (empty($available_statuses)):
-                            ?>
-                                <div class="alert alert-warning" role="alert">
-                                    <i class="fas fa-exclamation-triangle me-2"></i>Không có trạng thái nào khả dụng để chuyển đổi. Vui lòng kiểm tra dữ liệu.
-                                </div>
-                            <?php else: ?>
-                                <form method="POST" class="update-status-form">
-                                    <input type="hidden" name="action" value="update_status">
-                                    <input type="hidden" name="id_donhang" value="<?php echo $ord['id_donhang']; ?>">
-                                    <div class="mb-3">
-                                        <label for="new_status_<?php echo $ord['id_donhang']; ?>" class="form-label">
-                                            <i class="fas fa-arrow-right me-2"></i>Chọn trạng thái mới
-                                        </label>
-                                        <select name="new_status" id="new_status_<?php echo $ord['id_donhang']; ?>" class="form-control" required>
-                                            <option value="">-- Chọn trạng thái --</option>
-                                            <?php foreach ($available_statuses as $status): ?>
-                                                <option value="<?php echo htmlspecialchars($status); ?>"><?php echo htmlspecialchars($status); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                    <div class="d-flex gap-2">
-                                        <button type="submit" class="btn custom-btn" id="submitBtn_<?php echo $ord['id_donhang']; ?>">
-                                            <span class="loading-spinner spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                            <span class="btn-text"><i class="fas fa-save me-2"></i>Cập nhật</span>
-                                        </button>
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            <i class="fas fa-times me-2"></i>Hủy
-                                        </button>
-                                    </div>
-                                </form>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php endforeach; ?>
-
-        <div class="text-center mt-4">
-            <a href="dashboard.php" class="btn custom-btn">
-                <i class="fas fa-tachometer-alt me-2"></i>Về Dashboard
-            </a>
         </div>
     </div>
 

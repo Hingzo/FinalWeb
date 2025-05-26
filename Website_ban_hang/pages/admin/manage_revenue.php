@@ -289,6 +289,24 @@ try {
             width: 600px;
         }
 
+        /* Thêm style cho sidebar */
+        .sidebar {
+            background-color: #5a9bb8;
+            min-height: 100vh;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .dashboard-title {
                 font-size: 2rem;
@@ -307,10 +325,10 @@ try {
         <div class="shape"></div>
     </div>
 
-    <header class=" text-white py-3 shadow-lg">
+    <header class="text-white py-3 shadow-lg">
         <div class="container d-flex justify-content-between align-items-center me-2">
             <div class="logo-container">
-                   <img src="../../assets/images/logo.png" alt="LE.GICARFT Logo" width="100" height="60">
+                <img src="../../assets/images/logo.png" alt="LE.GICARFT Logo" width="100" height="60">
             </div>
             <div class="user-cart">
                 <span class="text-black me-3">
@@ -324,94 +342,121 @@ try {
         </div>
     </header>
 
-    <div class="container mt-4">
-         <div class="welcome-section">
-    <h1 class="dashboard-title fw-bold">
-        <i class="fas fa-chart-bar me-3"></i>THỐNG KÊ DOANH THU
-    </h1>
-    <p class="dashboard-subtitle">
-        Phân tích và theo dõi doanh thu cửa hàng
-    </p>
-</div>
-
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-6 col-md-12">
-                <div class="admin-card text-center h-100">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="card-icon">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                            <h4 class="card-title">Tổng doanh thu</h4>
-                            <p class="card-text"><?= number_format($totalRevenue, 0, ',', '.') ?> đ</p>
-                        </div>
+    <!-- Container chính -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar p-0">
+                <div class="p-3">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle d-flex align-items-center w-100" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-bars me-2"></i> Chức năng quản lý
+                        </button>
+                        <ul class="dropdown-menu w-100">
+                             <li><a class="dropdown-item" href="dashboard.php">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="manage_order.php">Quản lý đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="manage_product.php">Quản lý sản phẩm</a></li>
+                            <li><a class="dropdown-item active" href="manage_revenue.php">Thống kê doanh thu</a></li>
+                            <li><a class="dropdown-item" href="manage_category.php">Quản lý danh mục</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row justify-content-center mt-4">
-            <div class="col-lg-6 col-md-12">
-                <div class="admin-card text-center h-150 ">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="card-icon">
-                                <i class="fas fa-calendar"></i>
+            <!-- Main Content -->
+            <div class="col-md-10 p-4">
+                <div class="welcome-section">
+                    <h1 class="dashboard-title fw-bold">
+                        <i class="fas fa-chart-bar me-3"></i>THỐNG KÊ DOANH THU
+                    </h1>
+                    <p class="dashboard-subtitle">
+                        Phân tích và theo dõi doanh thu cửa hàng
+                    </p>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="admin-card text-center h-100">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="card-icon">
+                                        <i class="fas fa-dollar-sign"></i>
+                                    </div>
+                                    <h4 class="card-title">Tổng doanh thu</h4>
+                                    <p class="card-text"><?= number_format($totalRevenue, 0, ',', '.') ?> đ</p>
+                                </div>
                             </div>
-                            <h4 class="card-title">Tổng doanh thu theo tháng</h4>
-                            <ul class="list-group">
-                                <?php foreach ($monthlyRevenue as $month => $revenue): ?>
-                                    <li class="list-group-item"><?= htmlspecialchars($month) ?>: <?= number_format($revenue, 0, ',', '.') ?> đ</li>
-                                <?php endforeach; ?>
-                            </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- <div class="row justify-content-center mt-4">
-            <div class="col-lg-6 col-md-12">
-                <div class="admin-card text-center h-100">
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <div>
-                            <div class="card-icon">
-                                <i class="fas fa-trophy"></i>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="admin-card text-center h-150">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="card-icon">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <h4 class="card-title">Tổng doanh thu theo tháng</h4>
+                                    <ul class="list-group">
+                                        <?php foreach ($monthlyRevenue as $month => $revenue): ?>
+                                            <li class="list-group-item"><?= htmlspecialchars($month) ?>: <?= number_format($revenue, 0, ',', '.') ?> đ</li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
                             </div>
-                            <h4 class="card-title">Top 5 sản phẩm bán chạy</h4>
-                            <ul class="list-group">
-                                <?php foreach ($topProducts as $index => $product): ?>
-                                    <li class="list-group-item">
-                                        <?= ($index + 1) . ". " . htmlspecialchars($product['ten_sanpham'] ?? 'Không có tên') ?>: 
-                                        <?= $product['total_quantity_sold'] ?? 0 ?> sản phẩm (<?= number_format($product['total_sales'] ?? 0, 0, ',', '.') ?> đ)
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div> -->
 
-      <div class="row justify-content-center mt-4">
-    <div class="col-lg-8 col-md-12">
-        <div class="admin-card text-center h-80 px-3 py-3" style="max-width: 700px; margin: 0 auto;">
-            <div class="card-body">
-                <h4 class="card-title text-break mb-4" style="word-break: break-word; white-space: normal;">
-                    <strong>Biểu đồ tăng trưởng doanh thu trong năm</strong>
-                </h4>
-                <div class="chart-container">
-                    <canvas id="growthChart"></canvas>
+                <!-- <div class="row justify-content-center mt-4">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="admin-card text-center h-100">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="card-icon">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <h4 class="card-title">Top 5 sản phẩm bán chạy</h4>
+                                    <ul class="list-group">
+                                        <?php foreach ($topProducts as $index => $product): ?>
+                                            <li class="list-group-item">
+                                                <?= ($index + 1) . ". " . htmlspecialchars($product['ten_sanpham'] ?? 'Không có tên') ?>: 
+                                                <?= $product['total_quantity_sold'] ?? 0 ?> sản phẩm (<?= number_format($product['total_sales'] ?? 0, 0, ',', '.') ?> đ)
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="row justify-content-center mt-4">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="admin-card text-center h-80 px-3 py-3" style="max-width: 700px; margin: 0 auto;">
+                            <div class="card-body">
+                                <h4 class="card-title text-break mb-4" style="word-break: break-word; white-space: normal;">
+                                    <strong>Biểu đồ tăng trưởng doanh thu trong năm</strong>
+                                </h4>
+                                <div class="chart-container">
+                                    <canvas id="growthChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 
     </div>
-
+ <div class="text-center mt-4">
+                    <a href="dashboard.php" class="btn custom-btn">
+                        <i class="fas fa-tachometer-alt me-2"></i>Về Dashboard
+                    </a>
+                </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const ctxGrowth = document.getElementById('growthChart').getContext('2d');

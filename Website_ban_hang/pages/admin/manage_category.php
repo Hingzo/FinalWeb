@@ -28,7 +28,7 @@ if (isset($_GET['success']) && $_GET['success'] === 'added') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .header-bg { background: linear-gradient(135deg, #d4a574, #b8956a); }
+        .header-bg { background: linear-gradient(135deg,rgb(238, 236, 236),rgb(255, 255, 255)); }
         .sidebar { background-color: #5a9bb8; min-height: 100vh; }
         .sidebar .nav-link { color: white; padding: 12px 20px; border-radius: 8px; margin: 5px 0; }
         .sidebar .nav-link:hover, .sidebar .nav-link.active { background-color: rgba(255,255,255,0.2); color: white; }
@@ -46,7 +46,7 @@ if (isset($_GET['success']) && $_GET['success'] === 'added') {
             <div class="row align-items-center">
                 <div class="col-md-3">
                     <div class="d-flex align-items-center">
-                        <img src="logo.png" alt="LE.GICARFT Logo" class="logo-img">
+                        <img src="../../assets/images/logo.png" alt="LE.GICARFT Logo" width="100" height="60">
                     </div>
                 </div>
                 <div class="col-md-6"></div>
@@ -76,9 +76,9 @@ if (isset($_GET['success']) && $_GET['success'] === 'added') {
                         </button>
                         <ul class="dropdown-menu w-100">
 
-                            <li><a class="dropdown-item" href="manage_orders.php">Quản lý đơn hàng</a></li>
+                                <li><a class="dropdown-item" href="manage_order.php">Quản lý đơn hàng</a></li>
                             <li><a class="dropdown-item" href="manage_product.php">Quản lý sản phẩm</a></li>
-                            <li><a class="dropdown-item" href="manage_users.php">Quản lý người dùng</a></li>
+                            <li><a class="dropdown-item" href="manage_revenue.php">Thống kê doanh thu</a></li>
                             <li><a class="dropdown-item active" href="manage_category.php">Quản lý danh mục</a></li>
                         </ul>
                     </div>
@@ -147,7 +147,11 @@ if (isset($_GET['success']) && $_GET['success'] === 'added') {
             </div>
         </div>
     </div>
-
+ <div class="text-center mt-4">
+                    <a href="dashboard.php" class="btn custom-btn">
+                        <i class="fas fa-tachometer-alt me-2"></i>Về Dashboard
+                    </a>
+                </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {

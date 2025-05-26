@@ -35,7 +35,7 @@ foreach ($categories as $category) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .header-bg {
-            background: linear-gradient(135deg, #d4a574, #b8956a);
+            background: linear-gradient(135deg,rgb(255, 255, 255),rgb(255, 255, 255));
         }
         .sidebar {
             background-color: #5a9bb8;
@@ -141,9 +141,9 @@ foreach ($categories as $category) {
                             Chức năng quản lý
                         </button>
                         <ul class="dropdown-menu w-100">
-                            <li><a class="dropdown-item" href="manage_orders.php">Quản lý đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="manage_order.php">Quản lý đơn hàng</a></li>
                             <li><a class="dropdown-item active" href="manage_product.php">Quản lý sản phẩm</a></li>
-                            <li><a class="dropdown-item" href="manage_users.php">Quản lý người dùng</a></li>
+                            <li><a class="dropdown-item" href="manage_revenue.php">Thống kê doanh thu</a></li>
                             <li><a class="dropdown-item" href="manage_category.php">Quản lý danh mục</a></li>
                         </ul>
                     </div>
@@ -220,7 +220,6 @@ foreach ($categories as $category) {
             </div>
         </div>
     </div>
-
     <!-- Success Alert -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
         <div id="successAlert" class="alert alert-success alert-dismissible fade" role="alert">
@@ -229,6 +228,11 @@ foreach ($categories as $category) {
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     </div>
+     <div class="text-center mt-4">
+                    <a href="dashboard.php" class="btn custom-btn">
+                        <i class="fas fa-tachometer-alt me-2"></i>Về Dashboard
+                    </a>
+                </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
