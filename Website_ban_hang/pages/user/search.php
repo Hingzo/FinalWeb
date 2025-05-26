@@ -6,10 +6,6 @@ require_once '../../config/db_config.php';
 session_start();
 $db = new Database($host, $username, $password, $dbname);
 
-if ($db->getConnection()) {
-    echo "Kết nối CSDL thành công!<br>";
-}
-
 $products = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $keyword = $_POST['keyword'] ?? '';
@@ -28,6 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LE.GICARFT | Tìm kiếm sản phẩm</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../../assets/css/style.css">
   
 </head>
 <body>
@@ -36,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       <div class="logo">
         <img src="../../assets/images/logo.png" alt="Logo LE.GICARFT" height="50">
       </div>
-      <div class="search flex-grow-1 mx-4">
-        <form method="POST" action="search.php" class="d-flex">
-          <input type="text" name="keyword" class="form-control rounded-start" placeholder="Nhập sản phẩm cần tìm kiếm" required>
-          <button type="submit" class="btn btn-primary rounded-end">Tìm kiếm</button>
-        </form>
-      </div>
+  <div class="search">
+            <form method="POST" action="search.php">
+                <input type="text" name="keyword" placeholder="Nhập sản phẩm cần tìm kiếm" required>
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
       <div class="user-cart d-flex gap-3">
         <?php if (isset($_SESSION['id_nguoidung'])): ?>
           <a href="logout.php" class="btn btn-outline-secondary">Đăng xuất</a>
@@ -98,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </section>
 
   <div class="container">
-    <p class="mt-3 text-center"><a href="home.php" class="btn btn-secondary">Quay lại trang chủ</a></p>
+    <p class="mt-3 text-center"><a href="my-order.php" class="btn btn-secondary">Quay lại trang chủ</a></p>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

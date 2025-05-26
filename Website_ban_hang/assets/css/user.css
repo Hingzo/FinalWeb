@@ -6,6 +6,31 @@
         .logo img {
             height: 50px;
         }
+        .search {
+    flex-grow: 1;
+    max-width: 500px;
+    margin: 0 30px;
+    display: flex;
+}
+
+.search input {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: #fff;
+    border-radius: 4px 0 0 4px;
+    outline: none;
+}
+
+.search button {
+    padding: 8px 16px;
+    background-color: #4f92a5;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
         .user-info {
             display: flex;
             align-items: center;

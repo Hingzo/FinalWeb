@@ -54,26 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="logo">
             <img src="../../assets/images/logo.png" alt="Le Gicart Logo">
         </div>
-        <div class="search">
-            <input type="text" placeholder="Nhập sản phẩm cần tìm kiếm">
-            <button>Tìm kiếm</button>
-        </div>
         <div class="user-cart">
         </div>
     </div>
-
-    <div class="main-container">
-        <div class="sidebar">
-            <h3>Danh mục sản phẩm</h3>
-            <ul class="sidebar-menu">
-                <li>HOTWHEELS</li>
-                <li>MINI GT</li>
-                <li>TARMACWORKS</li>
-                <li>BABY CRY</li>
-                <li>LABUBU</li>
-                <li>BABY THREE</li>
-            </ul>
-        </div>
         <div class="register-content"> <!-- Thay đổi từ .content thành .register-content -->
             <div class="register-modal">
                 <h3>Đăng ký tài khoản</h3>
@@ -123,7 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </div>
-
+<div class="container">
+    <p class="mt-3 text-center"><a href="home.php" class="btn btn-secondary">Quay lại trang chủ</a></p>
+  </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Bootstrap validation
