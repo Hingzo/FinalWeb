@@ -29,10 +29,10 @@ $products = Product::getFeatured($db);
             <div class="logo">
                 <img src="../../assets/images/logo.png" alt="Le Gicart Logo">
             </div>
-            <div class="search flex-grow-1 mx-4">
+    <div class="search">
             <form method="POST" action="search.php">
                 <input type="text" name="keyword" placeholder="Nhập sản phẩm cần tìm kiếm" required>
-                <button type="submit"class="btn btn-primary rounded-end">Tìm kiếm</button>
+                <button type="submit">Tìm kiếm</button>
             </form>
         </div>
             <div class="user-cart d-flex align-items-center gap-3">
