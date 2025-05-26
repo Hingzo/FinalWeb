@@ -86,9 +86,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
                         </button>
                         <ul class="dropdown-menu w-100">
                             <li><a class="dropdown-item" href="dashboard.php">Dashboard</a></li>
-                            <li><a class="dropdown-item" href="manage_orders.php">Quản lý đơn hàng</a></li>
-                            <li><a class="dropdown-item" href="manage_products.php">Quản lý sản phẩm</a></li>
-                            <li><a class="dropdown-item" href="manage_users.php">Quản lý người dùng</a></li>
+                               <li><a class="dropdown-item" href="manage_order.php">Quản lý đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="manage_product.php">Quản lý sản phẩm</a></li>
+                            <li><a class="dropdown-item" href="manage_revenue.php">Thống kê doanh thu</a></li>
                             <li><a class="dropdown-item active" href="manage_category.php">Quản lý danh mục</a></li>
                         </ul>
                     </div>
