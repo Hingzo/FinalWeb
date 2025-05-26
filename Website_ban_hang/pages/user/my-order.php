@@ -38,19 +38,21 @@ $products = Product::getFeatured($db);
             <div class="user-cart d-flex align-items-center gap-3">
                 <div class="user-info d-flex align-items-center">
                     <div class="avatar">
-                        <img src="https://tse3.mm.bing.net/th?id=OIP.xgGxThCiW1A5jWdxmRNKJQHaHa&pid=Api&P=0&h=220.png" alt="Avatar">
+                        <a href="order-history.php">
+                            <img src="https://tse3.mm.bing.net/th?id=OIP.xgGxThCiW1A5jWdxmRNKJQHaHa&pid=Api&P=0&h=220.png" alt="Avatar">
+                        </a>
                     </div>
                     <div class="account">
-                        <span>Tài khoản</span>
-                        <strong>
-                            <?php
-                            if (isset($_SESSION['hoten'])) {
-                                echo htmlspecialchars($_SESSION['hoten']);
-                            } else {
-                                echo "Khách hàng";
-                            }
-                            ?>
-                        </strong>
+                            <span>Tài khoản</span>
+                            <strong>
+                                <?php
+                                if (isset($_SESSION['hoten'])) {
+                                    echo htmlspecialchars($_SESSION['hoten']);
+                                } else {
+                                    echo "Khách hàng";
+                                }
+                                ?>
+                            </strong>
                     </div>
                 </div>
                 <div class="cart">
@@ -106,9 +108,9 @@ $products = Product::getFeatured($db);
                                     <div class="product-info">
                                         <h3 class="fs-5"><?php echo htmlspecialchars($product->getName()); ?></h3>
                                         <p class="price"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> VNĐ</p>
-                                        <form method="GET" action="add_to_cart.php">
-                                            <input type="hidden" name="id" value="<?php echo $product->getId(); ?>">
-                                       
+                                        <form method="POST" action="cart.php">
+                                            <input type="hidden" name="id_sanpham" value="<?php echo $product->getId(); ?>">
+                                            <button type="submit" name="add_to_cart" class="add-to-cart-btn">Thêm vào giỏ</button>
                                         </form>
                                     </div>
                                 </div>

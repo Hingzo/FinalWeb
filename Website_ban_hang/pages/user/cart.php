@@ -58,7 +58,7 @@ foreach ($cart as $productId => $quantity) {
 <div class="container py-5">
     <h2 class="mb-4 text-center">Giỏ hàng của bạn</h2>
     <div class="mt-4 text-left py-2">
-        <a href="../../pages/user/my-order.php" class="btn btn-primary">←</a>
+        <a href="../../pages/user/home.php" class="btn btn-primary">←</a>
     </div>
 
     <?php if (empty($productsInCart)): ?>
@@ -69,7 +69,15 @@ foreach ($cart as $productId => $quantity) {
             <div class="card mb-3 shadow-sm">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="../../<?= htmlspecialchars($product->getImage()) ?>" class="img-fluid rounded-start" alt="<?= htmlspecialchars($product->getName()) ?>">
+                        <?php
+                        $imagePath = "../../" . htmlspecialchars($product->getImage());
+                        if (file_exists($imagePath)) {
+                            echo "<img src='$imagePath' class='card-img-top img-fluid' alt='" . htmlspecialchars($product->getName()) . "'>";
+                        } else {
+                            echo "<img src='../../assets/images/product1.png' class='card-img-top img-fluid' alt='No Image'>";
+                            error_log("Ảnh không tồn tại: $imagePath");
+                        }
+                        ?>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -99,7 +107,7 @@ foreach ($cart as $productId => $quantity) {
 
         <div class="text-end">
             <h4>Tổng cộng: <?= number_format($total, 0, ',', '.') ?> VNĐ</h4>
-            <a href="my-order.php" class="btn btn-success mt-3">Thanh toán</a>
+            <a href="checkout.php" class="btn btn-success mt-3">Thanh toán</a>
         </div>
     <?php endif; ?>
 </div>
