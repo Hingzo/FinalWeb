@@ -108,9 +108,9 @@ $products = Product::getFeatured($db);
                                     <div class="product-info">
                                         <h3 class="fs-5"><?php echo htmlspecialchars($product->getName()); ?></h3>
                                         <p class="price"><?php echo number_format($product->getPrice(), 0, ',', '.'); ?> VNĐ</p>
-                                        <form method="GET" action="add_to_cart.php">
-                                            <input type="hidden" name="id" value="<?php echo $product->getId(); ?>">
-                                            <button type="submit" class="btn btn-outline-primary">Thêm vào giỏ</button>
+                                        <form method="POST" action="cart.php">
+                                            <input type="hidden" name="id_sanpham" value="<?php echo $product->getId(); ?>">
+                                            <button type="submit" name="add_to_cart" class="add-to-cart-btn">Thêm vào giỏ</button>
                                         </form>
                                     </div>
                                 </div>

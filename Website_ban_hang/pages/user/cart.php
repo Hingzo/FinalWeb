@@ -58,7 +58,7 @@ foreach ($cart as $productId => $quantity) {
 <div class="container py-5">
     <h2 class="mb-4 text-center">Giỏ hàng của bạn</h2>
     <div class="mt-4 text-left py-2">
-        <a href="my-order.php" class="btn btn-primary">←</a>
+        <a href="../../pages/user/home.php" class="btn btn-primary">←</a>
     </div>
 
     <?php if (empty($productsInCart)): ?>
