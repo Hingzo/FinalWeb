@@ -149,7 +149,7 @@ foreach ($categories as $category) {
                     </li>
                 </ul>
 
-                <!-- Search Section -->
+                <!-- Mục tìm kiếm -->
                 <div class="search-section">
                     <div class="row align-items-center">
                         <div class="col-md-8">
@@ -163,7 +163,7 @@ foreach ($categories as $category) {
                     </div>
                 </div>
 
-                <!-- Products Table -->
+               <!-- Bảng sản phẩm -->
                 <div class="product-table p-4">
                     <?php if (empty($products)): ?>
                         <div class="text-center py-5">
@@ -210,7 +210,7 @@ foreach ($categories as $category) {
             </div>
         </div>
     </div>
-    <!-- Success Alert -->
+    <!-- Cảnh báo thành công -->
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
         <div id="successAlert" class="alert alert-success alert-dismissible fade" role="alert">
             <i class="fas fa-check-circle me-2"></i>
@@ -238,7 +238,7 @@ foreach ($categories as $category) {
             alert('Chức năng sắp xếp theo cũ nhất đang được phát triển');
         }
 
-        // Check for success message from URL
+        // Kiểm tra thông báo thành công từ URL
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('success') === 'added') {
             showSuccess('Đã thêm sản phẩm thành công!');
@@ -262,7 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const id = this.getAttribute("data-id");
 
             if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-                // Disable button
+                // Nút vô hiệu hóa
                 this.disabled = true;
                 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xóa...';
                 

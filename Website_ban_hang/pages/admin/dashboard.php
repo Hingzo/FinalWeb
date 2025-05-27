@@ -403,7 +403,7 @@ if (!isset($_SESSION['id_nguoidung']) || $_SESSION['vaitro'] != 'admin') {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Add smooth animations on page load
+       // Thêm hiệu ứng động mượt mà khi tải trang
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.admin-card');
             cards.forEach((card, index) => {
@@ -416,7 +416,7 @@ if (!isset($_SESSION['id_nguoidung']) || $_SESSION['vaitro'] != 'admin') {
                 }, index * 100);
             });
 
-            // Animate stats cards
+            // Làm hoạt hình các thẻ số liệu thống kê
             const statCards = document.querySelectorAll('.stat-card');
             statCards.forEach((card, index) => {
                 card.style.opacity = '0';
@@ -429,7 +429,7 @@ if (!isset($_SESSION['id_nguoidung']) || $_SESSION['vaitro'] != 'admin') {
             });
         });
 
-        // Refresh stats every 30 seconds
+   // Làm mới số liệu thống kê sau mỗi 30 giây
         setInterval(function() {
             fetch('get_stats.php')
                 .then(response => response.json())
