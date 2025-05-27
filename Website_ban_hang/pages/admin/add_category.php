@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .header-bg { background: linear-gradient(135deg, #d4a574, #b8956a); }
+        .header-bg { background: linear-gradient(135deg,rgb(255, 255, 255),rgb(255, 254, 252)); }
         .sidebar { background-color: #5a9bb8; min-height: 100vh; }
         .sidebar .nav-link { color: white; padding: 12px 20px; border-radius: 8px; margin: 5px 0; }
         .sidebar .nav-link:hover, .sidebar .nav-link.active { background-color: rgba(255,255,255,0.2); color: white; }
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
             <div class="row align-items-center">
                 <div class="col-md-3">
                     <div class="d-flex align-items-center">
-                        <img src="logo.png" alt="LE.GICARFT Logo" class="logo-img">
+                        <img src="../../assets/images/logo.png" alt="LE.GICARFT Logo" width="100" height="60">
                     </div>
                 </div>
                 <div class="col-md-6"></div>
