@@ -36,11 +36,7 @@ if ($selectedCategoryId) {
         <div class="logo">
             <img src="../../assets/images/logo.png" alt="Le Gicart Logo">
         </div>
-        <div class="search">
-            <form method="POST" action="search.php">
-                <input type="text" name="keyword" placeholder="Nhập sản phẩm cần tìm kiếm" required>
-                <button type="submit">Tìm kiếm</button>
-            </form>
+            
         </div>
         <div class="user-cart">
             <a href="login.php" class="cart">Đăng nhập</a>
