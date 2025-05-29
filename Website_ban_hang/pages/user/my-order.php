@@ -98,7 +98,7 @@ if ($selectedCategoryId) {
                 <img src="../../assets/images/banner.jpg" alt="Banner Hotwheels" class="img-fluid rounded">
             </div>
 
-            <!-- Featured Products or Products by Category -->
+            <!-- Sản phẩm nổi bật hoặc Sản phẩm theo danh mục -->
             <section class="product-section">
                 <h2 class="text-center mb-4">
                     <?php echo $selectedCategoryId ? "Sản phẩm trong danh mục: " . htmlspecialchars(array_reduce($categories, function($carry, $cat) use ($selectedCategoryId) {

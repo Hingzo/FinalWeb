@@ -662,7 +662,7 @@ $total_pages = ceil($total_orders / $per_page);
                 });
             });
 
-            // Reset loading state when modal is closed
+            // Đặt lại trạng thái tải khi modal đóng
             document.querySelectorAll('.modal').forEach(modal => {
                 modal.addEventListener('hidden.bs.modal', function() {
                     const submitBtn = document.querySelector('#submitBtn_' + this.id.replace('updateModal', ''));
